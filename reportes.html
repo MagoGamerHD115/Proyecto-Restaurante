@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="barra-superior">
+    <h2>Reportes</h2>
+    <nav>
+      <a href="mesas.html" class="btn-nav">Volver</a>
+    </nav>
+  </header>
+
+  <main class="contenedor">
+    <section class="grid-reportes">
+      <article class="reporte-card">
+        <p>Total Pedidos</p>
+        <h3 id="reporteTotalPedidos">0</h3>
+      </article>
+
+      <article class="reporte-card">
+        <p>Ventas del Día</p>
+        <h3 id="reporteVentasDia">$0.00</h3>
+      </article>
+
+      <article class="reporte-card">
+        <p>Ticket Promedio</p>
+        <h3 id="reporteTicketPromedio">$0.00</h3>
+      </article>
+
+      <article class="reporte-card">
+        <p>En Preparación</p>
+        <h3 id="reporteEnPreparacion">0</h3>
+      </article>
+    </section>
+
+    <section class="panel panel-reportes">
+      <div>
+        <h3>Estado de Pedidos</h3>
+        <p>Pendientes: <span id="reportePendientes">0</span></p>
+        <p>En preparación: <span id="reportePreparacion">0</span></p>
+        <p>Listos: <span id="reporteListos">0</span></p>
+      </div>
+
+      <div>
+        <h3>Productos Más Vendidos</h3>
+        <div id="reporteProductosMasVendidos">
+          <p>No hay datos todavía.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

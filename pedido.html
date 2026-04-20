@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Pedido</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="barra-superior">
+    <h2>Registro de Pedido</h2>
+    <nav>
+      <a href="mesas.html" class="btn-nav">Volver</a>
+      <button class="btn-nav btn-naranja" onclick="enviarACocina()">Enviar a cocina</button>
+    </nav>
+  </header>
+
+  <main class="contenedor">
+    <section class="layout-pedido">
+      <div class="panel">
+        <div class="titulo-pedido">
+          <h3>Productos</h3>
+          <div class="mesa-seleccionada">
+            <span>Mesa actual:</span>
+            <strong id="mesaActualTexto">Mesa 1</strong>
+          </div>
+        </div>
+
+        <div class="categorias">
+          <button class="categoria activa" onclick="filtrarProductos('todos', this)">Todos</button>
+          <button class="categoria" onclick="filtrarProductos('comidas', this)">Comidas</button>
+          <button class="categoria" onclick="filtrarProductos('bebidas', this)">Bebidas</button>
+          <button class="categoria" onclick="filtrarProductos('postres', this)">Postres</button>
+        </div>
+
+        <div class="grid-productos">
+          <article class="producto" data-categoria="comidas" onclick="agregarProducto('Hamburguesa Clásica', 12.99)">
+            <img src="img/hamburguesa.jpg" alt="Hamburguesa Clásica" class="img-producto">
+            <h4>Hamburguesa Clásica</h4>
+            <p>$12.99</p>
+          </article>
+
+          <article class="producto" data-categoria="comidas" onclick="agregarProducto('Pizza Margherita', 14.99)">
+            <img src="img/pizza.jpg" alt="Pizza Margherita" class="img-producto">
+            <h4>Pizza Margherita</h4>
+            <p>$14.99</p>
+          </article>
+
+          <article class="producto" data-categoria="comidas" onclick="agregarProducto('Ensalada César', 9.99)">
+            <img src="img/ensalada.jpg" alt="Ensalada César" class="img-producto">
+            <h4>Ensalada César</h4>
+            <p>$9.99</p>
+          </article>
+
+          <article class="producto" data-categoria="comidas" onclick="agregarProducto('Papas Fritas', 5.99)">
+            <img src="img/papas.jpg" alt="Papas Fritas" class="img-producto">
+            <h4>Papas Fritas</h4>
+            <p>$5.99</p>
+          </article>
+
+          <article class="producto" data-categoria="bebidas" onclick="agregarProducto('Coca Cola', 3.00)">
+            <img src="img/coca-cola.jpg" alt="Coca Cola" class="img-producto">
+            <h4>Coca Cola</h4>
+            <p>$3.00</p>
+          </article>
+
+          <article class="producto" data-categoria="bebidas" onclick="agregarProducto('Limonada', 3.49)">
+            <img src="img/limonada.jpg" alt="Limonada" class="img-producto">
+            <h4>Limonada</h4>
+            <p>$3.49</p>
+          </article>
+
+          <article class="producto" data-categoria="comidas" onclick="agregarProducto('Pasta Carbonara', 13.99)">
+            <img src="img/pasta.jpg" alt="Pasta Carbonara" class="img-producto">
+            <h4>Pasta Carbonara</h4>
+            <p>$13.99</p>
+          </article>
+
+          <article class="producto" data-categoria="comidas" onclick="agregarProducto('Tacos al Pastor', 11.99)">
+            <img src="img/tacos.jpg" alt="Tacos al Pastor" class="img-producto">
+            <h4>Tacos al Pastor</h4>
+            <p>$11.99</p>
+          </article>
+
+          <article class="producto" data-categoria="bebidas" onclick="agregarProducto('Cerveza', 4.50)">
+            <img src="img/cerveza.jpg" alt="Cerveza" class="img-producto">
+            <h4>Cerveza</h4>
+            <p>$4.50</p>
+          </article>
+
+          <article class="producto" data-categoria="postres" onclick="agregarProducto('Helado', 6.99)">
+            <img src="img/helado.jpg" alt="Helado" class="img-producto">
+            <h4>Helado</h4>
+            <p>$6.99</p>
+          </article>
+
+          <article class="producto" data-categoria="postres" onclick="agregarProducto('Brownie', 7.50)">
+            <img src="img/brownie.jpg" alt="Brownie" class="img-producto">
+            <h4>Brownie</h4>
+            <p>$7.50</p>
+          </article>
+        </div>
+      </div>
+
+      <aside class="panel pedido-actual">
+        <h3>Pedido actual</h3>
+        <div id="listaPedido"></div>
+
+        <div class="total-pedido">
+          <strong>Total</strong>
+          <strong id="totalPedido">$0.00</strong>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
