@@ -14,6 +14,17 @@ function iniciarSesion() {
 let pedido = [];
 let mesaActual = 1;
 
+const mesasConfiguracion = [
+  { id: 1, numero: 1, capacidad: 2, tipo: "mesa-redonda", claseExtra: "pos-1" },
+  { id: 2, numero: 2, capacidad: 4, tipo: "mesa-redonda", claseExtra: "pos-2" },
+  { id: 3, numero: 3, capacidad: 4, tipo: "mesa-redonda", claseExtra: "pos-3" },
+  { id: 4, numero: 4, capacidad: 6, tipo: "mesa-rectangular", claseExtra: "pos-4" },
+  { id: 5, numero: 5, capacidad: 6, tipo: "mesa-rectangular", claseExtra: "pos-5" },
+  { id: 6, numero: 6, capacidad: 8, tipo: "mesa-rectangular-larga", claseExtra: "pos-6" },
+  { id: 7, numero: 7, capacidad: 8, tipo: "mesa-rectangular-larga", claseExtra: "pos-7" },
+  { id: 8, numero: 8, capacidad: 8, tipo: "mesa-cuadrada", claseExtra: "pos-8" }
+];
+
 document.addEventListener("DOMContentLoaded", () => {
   obtenerMesaDesdeURL();
   mostrarMesaActual();
@@ -62,6 +73,10 @@ function guardarHistorialPedidos(historial) {
   localStorage.setItem("historialPedidos", JSON.stringify(historial));
 }
 
+function obtenerConfiguracionMesa(numeroMesa) {
+  return mesasConfiguracion.find(mesa => mesa.id === Number(numeroMesa));
+}
+
 function cargarPedidoExistente() {
   const listaPedido = document.getElementById("listaPedido");
   if (!listaPedido) return;
@@ -71,12 +86,21 @@ function cargarPedidoExistente() {
     p => Number(p.mesa) === Number(mesaActual)
   );
 
+  const inputPersonas = document.getElementById("personasMesa");
+  const configMesa = obtenerConfiguracionMesa(mesaActual);
+
   if (pedidoExistente) {
     pedido = pedidoExistente.productos.map(producto => ({
       nombre: producto.nombre,
       precio: Number(producto.precio),
       cantidad: Number(producto.cantidad)
     }));
+
+    if (inputPersonas) {
+      inputPersonas.value = Number(pedidoExistente.personas || configMesa?.capacidad || 1);
+    }
+  } else if (inputPersonas) {
+    inputPersonas.value = Number(configMesa?.capacidad || 1);
   }
 }
 
@@ -175,6 +199,15 @@ function enviarACocina() {
     return;
   }
 
+  const inputPersonas = document.getElementById("personasMesa");
+  const configMesa = obtenerConfiguracionMesa(mesaActual);
+
+  let personasMesa = Number(inputPersonas?.value || configMesa?.capacidad || 1);
+
+  if (personasMesa < 1) {
+    personasMesa = 1;
+  }
+
   const pedidosGuardados = obtenerPedidosGuardados();
   const historial = obtenerHistorialPedidos();
 
@@ -185,6 +218,8 @@ function enviarACocina() {
   const nuevoPedido = {
     id: `mesa-${mesaActual}-${Date.now()}`,
     mesa: Number(mesaActual),
+    personas: personasMesa,
+    capacidad: Number(configMesa?.capacidad || personasMesa),
     productos: pedido.map(item => ({
       nombre: item.nombre,
       precio: Number(item.precio),
@@ -200,6 +235,7 @@ function enviarACocina() {
   );
 
   if (indiceExistente !== -1) {
+    nuevoPedido.id = pedidosGuardados[indiceExistente].id;
     pedidosGuardados[indiceExistente] = nuevoPedido;
   } else {
     pedidosGuardados.push(nuevoPedido);
@@ -263,6 +299,7 @@ function renderizarPedidosCocina() {
         <h3>Mesa ${pedidoCocina.mesa}</h3>
         <span class="estado ${claseEstado}">${pedidoCocina.estado}</span>
       </div>
+      <p><strong>Personas:</strong> ${pedidoCocina.personas || 0}</p>
       <div class="productos-cocina">
         ${productosHTML}
       </div>
@@ -328,6 +365,18 @@ function entregarPedido(index) {
   renderizarReportes();
 }
 
+function obtenerClaseEstadoMesa(estado) {
+  if (estado === "Listo") return "estado-libre-listo";
+  if (estado === "En preparación") return "estado-libre-preparacion";
+  if (estado === "Ocupada") return "estado-libre-ocupada";
+  return "estado-libre-disponible";
+}
+
+function obtenerTextoEstadoMesa(pedidoMesa) {
+  if (!pedidoMesa) return "Disponible";
+  return pedidoMesa.estado || "Ocupada";
+}
+
 function renderizarMesas() {
   const gridMesas = document.getElementById("gridMesas");
   if (!gridMesas) return;
@@ -335,48 +384,42 @@ function renderizarMesas() {
   const pedidosGuardados = obtenerPedidosGuardados();
   gridMesas.innerHTML = "";
 
-  for (let i = 1; i <= 8; i++) {
-    const pedidoMesa = pedidosGuardados.find(p => Number(p.mesa) === i);
+  mesasConfiguracion.forEach(mesa => {
+    const pedidoMesa = pedidosGuardados.find(p => Number(p.mesa) === Number(mesa.id));
+    const estadoTexto = obtenerTextoEstadoMesa(pedidoMesa);
+    const claseEstado = obtenerClaseEstadoMesa(estadoTexto);
+    const personas = pedidoMesa ? Number(pedidoMesa.personas || 0) : 0;
+    const accionTexto = pedidoMesa ? "Editar pedido" : "Tomar pedido";
 
-    let claseMesa = "mesa-disponible";
-    let estadoTexto = "Disponible";
-    let resumenHTML = "";
-    let botonHTML = `<a href="pedido.html?mesa=${i}" class="btn-principal">Tomar pedido</a>`;
-
-    if (pedidoMesa) {
-      claseMesa = "mesa-ocupada";
-      estadoTexto = pedidoMesa.estado;
-
-      resumenHTML = `
-        <div class="mesa-detalle">
-          ${pedidoMesa.productos
-            .map(prod => `<p>${prod.cantidad}x ${prod.nombre}</p>`)
-            .join("")}
-        </div>
-      `;
-
-      botonHTML = `<a href="pedido.html?mesa=${i}" class="btn-principal">Editar pedido</a>`;
-    }
-
-    const claseEstadoMesa =
-      estadoTexto === "Disponible"
-        ? "badge-disponible"
-        : estadoTexto === "Listo"
-        ? "badge-listo"
-        : "badge-preparacion";
-
-    const card = document.createElement("article");
-    card.className = `mesa-card ${claseMesa}`;
+    const card = document.createElement("a");
+    card.href = `pedido.html?mesa=${mesa.id}`;
+    card.className = `mesa-plano ${mesa.tipo} ${claseEstado} ${mesa.claseExtra}`;
     card.innerHTML = `
-      <div class="icono-mesa">🪑</div>
-      <h3>Mesa ${i}</h3>
-      <span class="badge-mesa ${claseEstadoMesa}">${estadoTexto}</span>
-      ${resumenHTML}
-      ${botonHTML}
+      <div class="mesa-forma">
+        <span class="silla silla-1"></span>
+        <span class="silla silla-2"></span>
+        <span class="silla silla-3"></span>
+        <span class="silla silla-4"></span>
+        <span class="silla silla-5"></span>
+        <span class="silla silla-6"></span>
+        <span class="silla silla-7"></span>
+        <span class="silla silla-8"></span>
+
+        <div class="mesa-centro">
+          <div class="mesa-numero">${mesa.numero}</div>
+        </div>
+      </div>
+
+      <div class="mesa-info">
+        <span class="badge-estado ${claseEstado}">${estadoTexto}</span>
+        <span class="badge-personas">👥 ${personas}</span>
+        <span class="badge-capacidad">Capacidad: ${mesa.capacidad}</span>
+        <span class="mesa-accion">${accionTexto}</span>
+      </div>
     `;
 
     gridMesas.appendChild(card);
-  }
+  });
 }
 
 function renderizarReportes() {
