@@ -16,13 +16,13 @@ a {
 
 .contenedor {
   width: 92%;
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 30px auto;
 }
 
 .barra-superior {
   width: 92%;
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 20px auto 0;
   background: #0f0f0f;
   border: 1px solid #222222;
@@ -157,82 +157,393 @@ a {
   color: #888888;
 }
 
-/* MESAS */
-.grid-mesas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+/* LEYENDA */
+.leyenda-panel {
+  margin-bottom: 20px;
 }
 
-.mesa-card {
-  background: #111111;
-  border: 1px solid #222222;
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
-  min-height: 220px;
+.leyenda {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.leyenda span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d8d8d8;
+}
+
+.punto {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.punto.disponible {
+  background: #22c55e;
+}
+
+.punto.preparacion {
+  background: #f59e0b;
+}
+
+.punto.listo {
+  background: #3b82f6;
+}
+
+.punto.ocupada {
+  background: #ef4444;
+}
+
+/* MAPA DE MESAS */
+.mapa-mesas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 34px;
+  justify-items: center;
+  align-items: start;
+  min-height: 500px;
+}
+
+.mesa-plano {
+  color: white;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.mesa-disponible {
-  border: 1px solid #1f7a3d;
+.mesa-plano:hover {
+  transform: scale(1.03);
+  filter: brightness(1.06);
+}
+
+.mesa-forma {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mesa-centro {
+  background: #121212;
+  border: 3px solid #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mesa-numero {
+  font-size: 38px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.silla {
+  position: absolute;
+  background: transparent;
+  border: 3px solid #2a2a2a;
+}
+
+/* Mesa redonda */
+.mesa-redonda .mesa-centro {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.mesa-redonda .silla {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.mesa-redonda .silla-1 {
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mesa-redonda .silla-2 {
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mesa-redonda .silla-3 {
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mesa-redonda .silla-4 {
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mesa-redonda .silla-5,
+.mesa-redonda .silla-6,
+.mesa-redonda .silla-7,
+.mesa-redonda .silla-8 {
+  display: none;
+}
+
+/* Mesa rectangular */
+.mesa-rectangular .mesa-centro {
+  width: 190px;
+  height: 110px;
+  border-radius: 18px;
+}
+
+.mesa-rectangular .silla {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.mesa-rectangular .silla-1 {
+  top: -18px;
+  left: 30%;
+}
+
+.mesa-rectangular .silla-2 {
+  top: -18px;
+  right: 30%;
+}
+
+.mesa-rectangular .silla-3 {
+  bottom: -18px;
+  left: 30%;
+}
+
+.mesa-rectangular .silla-4 {
+  bottom: -18px;
+  right: 30%;
+}
+
+.mesa-rectangular .silla-5 {
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mesa-rectangular .silla-6 {
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mesa-rectangular .silla-7,
+.mesa-rectangular .silla-8 {
+  display: none;
+}
+
+/* Mesa rectangular larga */
+.mesa-rectangular-larga .mesa-centro {
+  width: 280px;
+  height: 95px;
+  border-radius: 18px;
+}
+
+.mesa-rectangular-larga .silla {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.mesa-rectangular-larga .silla-1 {
+  top: -16px;
+  left: 18%;
+}
+
+.mesa-rectangular-larga .silla-2 {
+  top: -16px;
+  left: 38%;
+}
+
+.mesa-rectangular-larga .silla-3 {
+  top: -16px;
+  right: 38%;
+}
+
+.mesa-rectangular-larga .silla-4 {
+  top: -16px;
+  right: 18%;
+}
+
+.mesa-rectangular-larga .silla-5 {
+  bottom: -16px;
+  left: 18%;
+}
+
+.mesa-rectangular-larga .silla-6 {
+  bottom: -16px;
+  left: 38%;
+}
+
+.mesa-rectangular-larga .silla-7 {
+  bottom: -16px;
+  right: 38%;
+}
+
+.mesa-rectangular-larga .silla-8 {
+  bottom: -16px;
+  right: 18%;
+}
+
+/* Mesa cuadrada */
+.mesa-cuadrada .mesa-centro {
+  width: 180px;
+  height: 180px;
+  border-radius: 20px;
+}
+
+.mesa-cuadrada .silla {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.mesa-cuadrada .silla-1 {
+  top: -16px;
+  left: 35%;
+}
+
+.mesa-cuadrada .silla-2 {
+  top: -16px;
+  right: 35%;
+}
+
+.mesa-cuadrada .silla-3 {
+  right: -16px;
+  top: 28%;
+}
+
+.mesa-cuadrada .silla-4 {
+  right: -16px;
+  bottom: 28%;
+}
+
+.mesa-cuadrada .silla-5 {
+  bottom: -16px;
+  left: 35%;
+}
+
+.mesa-cuadrada .silla-6 {
+  bottom: -16px;
+  right: 35%;
+}
+
+.mesa-cuadrada .silla-7 {
+  left: -16px;
+  top: 28%;
+}
+
+.mesa-cuadrada .silla-8 {
+  left: -16px;
+  bottom: 28%;
+}
+
+.mesa-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-estado,
+.badge-personas,
+.badge-capacidad,
+.mesa-accion {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.badge-personas,
+.badge-capacidad {
+  background: #151515;
+  border: 1px solid #2a2a2a;
+  color: #eaeaea;
+}
+
+.mesa-accion {
+  background: #f5a000;
+  color: #111111;
+}
+
+/* Estados visuales */
+.estado-libre-disponible .mesa-centro,
+.estado-libre-disponible .silla {
+  border-color: #1f7a3d;
+}
+
+.estado-libre-disponible .mesa-centro {
   background: linear-gradient(180deg, #0d1f14 0%, #111111 100%);
 }
 
-.mesa-ocupada {
-  border: 1px solid #7a1f2b;
-  background: linear-gradient(180deg, #1f0d12 0%, #111111 100%);
-}
-
-.icono-mesa {
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-.badge-mesa {
-  display: inline-block;
-  align-self: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.badge-disponible {
+.estado-libre-disponible.badge-estado,
+.badge-estado.estado-libre-disponible {
   background: #163d24;
   color: #79e39f;
+  border: 1px solid #1f7a3d;
 }
 
-.badge-preparacion {
+.estado-libre-preparacion .mesa-centro,
+.estado-libre-preparacion .silla {
+  border-color: #d08b00;
+}
+
+.estado-libre-preparacion .mesa-centro {
+  background: linear-gradient(180deg, #2b1d06 0%, #111111 100%);
+}
+
+.estado-libre-preparacion.badge-estado,
+.badge-estado.estado-libre-preparacion {
   background: #4f3b00;
   color: #ffd15c;
+  border: 1px solid #d08b00;
 }
 
-.badge-listo {
+.estado-libre-listo .mesa-centro,
+.estado-libre-listo .silla {
+  border-color: #3b82f6;
+}
+
+.estado-libre-listo .mesa-centro {
+  background: linear-gradient(180deg, #0a1e38 0%, #111111 100%);
+}
+
+.estado-libre-listo.badge-estado,
+.badge-estado.estado-libre-listo {
   background: #0d3d54;
   color: #7dd3fc;
+  border: 1px solid #3b82f6;
 }
 
-.mesa-detalle {
-  text-align: left;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 10px;
-  min-height: 70px;
+.estado-libre-ocupada .mesa-centro,
+.estado-libre-ocupada .silla {
+  border-color: #b42318;
 }
 
-.mesa-detalle p {
-  font-size: 13px;
-  color: #dddddd;
-  margin-bottom: 6px;
+.estado-libre-ocupada .mesa-centro {
+  background: linear-gradient(180deg, #2a1010 0%, #111111 100%);
 }
 
-.mesa-detalle p:last-child {
-  margin-bottom: 0;
+.estado-libre-ocupada.badge-estado,
+.badge-estado.estado-libre-ocupada {
+  background: #5a161c;
+  color: #ffc7c7;
+  border: 1px solid #b42318;
 }
 
 /* PEDIDO */
@@ -261,6 +572,28 @@ a {
 
 .mesa-seleccionada strong {
   color: #f5a000;
+}
+
+.panel-personas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 15px 0 10px;
+}
+
+.panel-personas label {
+  color: #dddddd;
+  font-size: 14px;
+}
+
+.panel-personas input {
+  max-width: 200px;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  outline: none;
 }
 
 .categorias {
@@ -470,6 +803,16 @@ a {
 }
 
 /* RESPONSIVE */
+@media (max-width: 1100px) {
+  .mapa-mesas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mesa-rectangular-larga .mesa-centro {
+    width: 230px;
+  }
+}
+
 @media (max-width: 900px) {
   .layout-pedido,
   .panel-reportes {
@@ -478,6 +821,10 @@ a {
 
   .grid-productos {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mapa-mesas {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -490,5 +837,29 @@ a {
 
   .grid-productos {
     grid-template-columns: 1fr;
+  }
+
+  .mesa-redonda .mesa-centro {
+    width: 125px;
+    height: 125px;
+  }
+
+  .mesa-rectangular .mesa-centro {
+    width: 160px;
+    height: 95px;
+  }
+
+  .mesa-rectangular-larga .mesa-centro {
+    width: 190px;
+    height: 85px;
+  }
+
+  .mesa-cuadrada .mesa-centro {
+    width: 150px;
+    height: 150px;
+  }
+
+  .mesa-numero {
+    font-size: 30px;
   }
 }
